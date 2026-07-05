@@ -1,0 +1,24 @@
+{
+  "name": "copia-de-web-makai",
+  "version": "1.0.0",
+  "description": "Réplica de la web de Makai para el cliente Miguel, en HTML/CSS/JS vanilla + GSAP, pensada para poder migrarse a GoHighLevel.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/samuelurbi/copia-web-makai.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/samuelurbi/copia-web-makai/issues"
+  },
+  "homepage": "https://github.com/samuelurbi/copia-web-makai#readme",
+  "devDependencies": {
+    "playwright": "^1.61.1"
+  }
+}

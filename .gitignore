@@ -16,3 +16,16 @@ desktop.ini
 
 # Logs
 *.log
+
+# Fuente original de la extensión (32 MB, solo referencia local; la web
+# publicable es copia-de-makai-limpio.html)
+copia-de-makai-por-extension.html
+
+# Material de verificación local (160+ MB de capturas y sondas); se conservan
+# solo el brief y el helper, que son parte del flujo de trabajo del repo
+refs/*
+!refs/BRIEF-responsive.md
+!refs/shot.mjs
+
+# Artefactos del navegador MCP
+.playwright-mcp/

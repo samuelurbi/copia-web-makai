@@ -1,0 +1,35 @@
+/* ============================================================
+   NAVEGACIÓN MÓVIL (hamburger + off-canvas) — hasta 1024px
+   Propietario: agente mobile-nav. NO tocar desde otros archivos
+   ni editar este archivo fuera de ese agente.
+   Estilos del toggle .slide-out-widget-area-toggle, del panel
+   #slide-out-widget-area y su overlay. Acotar a
+   (max-width: 1024px) salvo lo que aplique al panel abierto.
+
+   Casi todo el aspecto y la animación del panel ya vienen del
+   style.css capturado (el theme anima con transiciones CSS y el
+   JS solo mueve clases + transform inline, ver js/mobile-nav.js).
+   Aquí solo lo que el theme deja cojo en la copia.
+   ============================================================ */
+
+@media (max-width: 1024px) {
+
+  /* El theme deja el anchor del toggle fijo (la "X" que queda sobre el
+     hamburger con el panel abierto) con pointer-events:none y solo lo
+     habilita en UAs táctiles (body.using-mobile-browser, que la copia no
+     tiene): con ratón, la original ni siquiera permite cerrar el panel a
+     estos anchos. Se habilita siempre. Acotado a ≤1024px para que a
+     desktop su hotspot invisible (22×21px, esquina superior izquierda,
+     z-index 10000) no robe clicks a la zona del logo. */
+  body .slide-out-widget-area-toggle.slide-out-hover-icon-effect a {
+    pointer-events: auto;
+    cursor: pointer;
+  }
+
+  /* Durante el cambio a subvista (DOWNLOADS/idioma) el JS pina la altura
+     de .menu-wrap en px y la interpola; que el menú entrante no asome
+     fuera mientras la altura llega a su sitio. */
+  #slide-out-widget-area .menu-wrap.menuwrapper {
+    overflow: hidden;
+  }
+}

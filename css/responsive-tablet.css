@@ -1,0 +1,106 @@
+/* ============================================================
+   RESPONSIVE TABLET — rango 768px a 1024px
+   Propietario: agente responsive-tablet. NO tocar desde otros
+   archivos ni editar este archivo fuera de ese agente.
+   Todas las reglas deben ir dentro de media queries acotadas a
+   (min-width: 768px) and (max-width: 1024px) — o sub-rangos —
+   para no afectar mobile (<768) ni desktop (>=1025).
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   Tarjetas "Ocean & Landscape" (#ocean-landscape, 8 columnas
+   vc_col-sm-3.one-fourths): NO llevan regla propia aquí, a
+   propósito. OJO trampa de medición: en la original la clase
+   one-fourths la añade el JS del theme DESPUÉS de cargar, así que
+   una sonda recién cargada ve las tarjetas apiladas a 737px
+   (estado transitorio, sección 3129px). El estado FINAL medido
+   tras recorrer la página (prescroll) es rejilla 2x2 al 50%
+   (369x358, margin-bottom 2%=14.7px, sección 1962px), que es
+   exactamente lo que da la regla de responsive.css de Salient
+   `.one-fourths.vc_col-sm-3{width:50%;margin-bottom:2%}` (media
+   690–999) con la clase congelada en el HTML de la copia: la
+   cascada ya hace lo correcto sin ayuda. A 1000–1024 ambas
+   vuelven al 25% de desktop. Un intento anterior forzaba aquí
+   width:100% por comparar contra el estado transitorio: no
+   reintroducirlo.
+   ------------------------------------------------------------ */
+
+/* ------------------------------------------------------------
+   Carrusel de amenities (#fws_6a4638b738014, único
+   wpb_gallery_slidesflickity_static_height_style de la página).
+   El flickity original fija inline la altura de cada img según
+   sus reglas responsive por instancia: 500px desktop, 400px
+   <=1300, 350px <=1000 (medido en la original a 768: celdas de
+   350x350 y 627x350). En la copia las imgs traen congelado el
+   inline de desktop (height:500px; width:<aspecto>px), de ahí el
+   !important. main.js vacía la altura del viewport, así que la
+   celda y el carrusel siguen a la img.
+   ------------------------------------------------------------ */
+@media only screen and (min-width: 768px) and (max-width: 1000px) {
+  .wpb_gallery_slidesflickity_static_height_style .nectar-flickity:not(.masonry) .flickity-slider .cell img {
+    height: 350px !important;
+    width: auto !important;
+  }
+}
+@media only screen and (min-width: 1001px) and (max-width: 1024px) {
+  .wpb_gallery_slidesflickity_static_height_style .nectar-flickity:not(.masonry) .flickity-slider .cell img {
+    height: 400px !important;
+    width: auto !important;
+  }
+}
+
+/* ------------------------------------------------------------
+   Títulos fit-text de los heroes (CONDOS / AMENITIES / LOCATION /
+   INVESTMENT, wrappers data-has-fit-text). El JS de la original
+   recalcula el inline font-size en px para llenar su contenedor en
+   cada viewport; la copia trae congelado el vw de la captura
+   desktop (9.803/7.739/7.866/6.438vw), que a 768 deja los títulos
+   a la mitad del tamaño. Medido en la original tras prescroll:
+   a 768 → 157.7/124.5/126.7/103.7px (llenan el container 88% =
+   675px); a 1024 → 91.7/71.5/73.0/59.2px (sin body.mobile el
+   contenedor del título es más estrecho, 403px). Convertido a vw
+   por sub-rango para que escale igual que la original (a 900
+   queda a <1% del valor medido: 185.7px). !important porque el
+   font-size viene inline congelado.
+   ------------------------------------------------------------ */
+@media only screen and (min-width: 768px) and (max-width: 999px) {
+  #fws_6a4638b724720 [data-has-fit-text] { font-size: 20.533vw !important; } /* CONDOS */
+  #fws_6a4638b7372db [data-has-fit-text] { font-size: 16.217vw !important; } /* AMENITIES */
+  #fws_6a4638b7398dc [data-has-fit-text] { font-size: 16.493vw !important; } /* LOCATION */
+  #fws_6a4638b741cd6 [data-has-fit-text] { font-size: 13.505vw !important; } /* INVESTMENT */
+}
+@media only screen and (min-width: 1000px) and (max-width: 1024px) {
+  #fws_6a4638b724720 [data-has-fit-text] { font-size: 8.959vw !important; } /* CONDOS */
+  #fws_6a4638b7372db [data-has-fit-text] { font-size: 6.981vw !important; } /* AMENITIES */
+  #fws_6a4638b7398dc [data-has-fit-text] { font-size: 7.129vw !important; } /* LOCATION */
+  #fws_6a4638b741cd6 [data-has-fit-text] { font-size: 5.786vw !important; } /* INVESTMENT */
+}
+
+/* ------------------------------------------------------------
+   Carruseles flickity (#team y amenities #fws_6a4638b738014).
+   En la original el .flickity-viewport computa overflow:visible
+   (medido a 768): la tarjeta DEVELOPER sobresale 47px por debajo
+   de la celda de 600px y las celdas de amenities sangran hasta el
+   borde de la pantalla. En la copia el viewport trae congelado
+   inline "overflow:hidden" (estado del flickity original al
+   guardar), que recorta la tarjeta verde a media frase y corta la
+   celda vecina en el borde del contenedor (x=722). Se restaura el
+   visible; el eje X no genera scroll horizontal porque, igual que
+   en la original, un ancestro (.container-wrap) ya recorta el
+   desbordamiento de página. !important contra el estilo inline.
+   ------------------------------------------------------------ */
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+  #team .nectar-flickity .flickity-viewport,
+  #fws_6a4638b738014 .nectar-flickity .flickity-viewport {
+    overflow: visible !important;
+  }
+}
+
+/* ------------------------------------------------------------
+   Formulario "Get in touch": el mapeo temporal a Poppins se
+   retiró — la copia ya carga la Noto Sans 700 real desde Google
+   Fonts (mismo origen que bunny.net), enlazada en el HTML después
+   de style.css para ganar la cascada a los @font-face con url()
+   vacío que dejó la extensión. Las reglas font-family:"noto sans"
+   del theme vuelven a resolver solas en todos los anchos.
+   ------------------------------------------------------------ */

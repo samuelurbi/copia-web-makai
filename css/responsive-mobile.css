@@ -1,0 +1,141 @@
+/* ============================================================
+   RESPONSIVE MOBILE — hasta 767px
+   Propietario: agente responsive-mobile. NO tocar desde otros
+   archivos ni editar este archivo fuera de ese agente.
+   Todas las reglas deben ir dentro de media queries acotadas a
+   (max-width: 767px) para no afectar tablet ni desktop.
+   ============================================================ */
+
+@media (max-width: 767px) {
+
+  /* ---- Hero mobile (nectar slider) -----------------------------------
+     La extensión de guardado congeló el slider con su geometría desktop
+     inline (swiper-container 1905x775, wrapper 7620px con translate3d
+     -3810px): en la copia se veía un bloque negro de 774px. En la
+     original el JS del slider lo recalcula a ancho completo y 360px de
+     alto constantes (medido a 360/390/430 de ancho; el <style> embebido
+     del theme tiene un min-height "360pxpx" con typo que el JS acaba
+     imponiendo). Aquí solo reponemos ese dimensionado: la rotación
+     (crossfade cada 10s, opacidad/position de cada slide, captions y
+     dots) la gestiona js/main.js v11 con estilos inline, así que NO se
+     tocan opacity ni transform/position de los .swiper-slide o el JS
+     quedaría pisado y el slide activo invisible. */
+  #nectar-slider-instance-2,
+  #nectar-slider-instance-2 .swiper-container {
+    width: 100% !important;
+    height: 360px !important;
+  }
+  #nectar-slider-instance-2 .swiper-wrapper {
+    width: 100% !important;
+    height: 100% !important;
+    transform: none !important;
+  }
+  /* Nota: la paginación (.slider-pagination-wrap) se centra sola con el
+     left:50% + translateX(-50%) del theme una vez el swiper-container
+     recupera el ancho real del viewport; no necesita overrides. */
+
+  /* ---- Amenities: carrusel de fotos (nectar-flickity) ----------------
+     Las <img> del carrusel quedaron con su tamaño desktop inline
+     (height:500px, width:895px…), que gana a la escalera de alturas del
+     theme (style.css:8326: 500px desktop → 350px ≤1000px → 300px ≤690px).
+     En la original medimos imgH=300 a 360/390/430 y 350 a 700 de ancho.
+     Reponemos esa escalera por encima del inline; width:auto para que
+     cada celda recupere su ancho proporcional (peek del siguiente slide). */
+  .wpb_gallery_slidesflickity_static_height_style .nectar-flickity .flickity-slider .cell img {
+    height: 350px !important;
+    width: auto !important;
+  }
+
+  /* ---- Condos mobile: fondos de las tarjetas 2-BED y 1-BED ------------
+     Las tarjetas son un nectar-sticky-media-sections (scroll-pinned) y su
+     foto vive en .nectar-sticky-media-section__media. En el guardado solo
+     la 1ª media (penthouse) quedó cargada; la 2ª y 3ª eran lazy y quedaron
+     sin background-image (solo data-nectar-img-src hacia el WP remoto), de
+     ahí que las tarjetas TWO/ONE BEDROOM salieran en crema sin foto. La
+     instancia desktop usa las mismas imágenes ya guardadas en assets/
+     (jpg-008 lounge 2-bed, jpg-009 bedroom 1-bed); las reutilizamos con
+     ruta relativa a este archivo (via var(--savepage-url-58/59) Chromium
+     resolvía la url relativa contra css/ y daba 404). */
+  #condos-mobile .nectar-sticky-media-section__content-section:nth-child(2) .nectar-sticky-media-section__media {
+    background-image: url("../assets/jpg-008-d2dbfd980d.jpg");
+  }
+  #condos-mobile .nectar-sticky-media-section__content-section:nth-child(3) .nectar-sticky-media-section__media {
+    background-image: url("../assets/jpg-009-3b2bab8505.jpg");
+  }
+
+  /* ---- Tarjetas con foto de fondo de columna (parallax congelado) ------
+     Las tarjetas "FREE DESIGNER FURNITURE PACK" (lounge T8L5GF) y su
+     equivalente con la foto del private deck usan un .column-image-bg
+     parallax de Salient. El guardado congeló su estado desktop inline
+     (height:115px + translate3d 114.84px + scale 1.005), así que a 390px
+     la foto quedaba fuera de la caja y la tarjeta salía en crema. En la
+     original móvil el parallax está desactivado y el layer cubre toda la
+     columna (medido con elementsFromPoint: pinta bajo el heading). Los
+     background-image ya resuelven via var(--savepage-url-78/60) de
+     style.css; solo reponemos la geometría. */
+  .column-image-bg-wrap .column-image-bg.parallax-layer {
+    height: 100% !important;
+    transform: none !important;
+    will-change: auto;
+  }
+
+  /* ---- Location mobile: carrusel EXPLORE & DISCOVER CAP CANA -----------
+     En la original cada .cell del carrusel mide 692px (flickity fija la
+     altura de la celda y el .inner-wrap con la foto la llena entera). En
+     la copia main.js normaliza las celdas a height:auto dentro de un
+     slider display:flex: la celda sí estira a 692px (align-items stretch
+     contra la celda más alta) pero .inner-wrap-outer/.inner-wrap quedaban
+     a la altura de su contenido (326px) porque height:100% no resuelve
+     contra un padre con height:auto → tarjeta corta + hueco crema de
+     ~366px hasta el final del viewport del carrusel. Encadenamos flex
+     para que el fondo estire igual que en la original (el inner_row se
+     centra solo: (692-286)/2 = 203px medidos en ambas). */
+  #location-mobile .nectar-flickity .flickity-slider .cell {
+    display: flex;
+  }
+  #location-mobile .nectar-flickity .flickity-slider .cell > .inner-wrap-outer {
+    display: flex;
+    width: 100%;
+  }
+  #location-mobile .nectar-flickity .flickity-slider .cell .inner-wrap-outer > .inner-wrap {
+    width: 100%;
+  }
+
+  /* ---- Amenities: barra de progreso del carrusel (touch_total) ---------
+     La barra bajo las fotos es .visualized-total > span (los
+     .flickity-page-dots van ocultos en este estilo de control). En la
+     original el span mide 1/3 de la barra (3 páginas de flickity, una por
+     celda: 103px de 306). main.js (v12+) ya calcula ancho y avance por
+     páginas; esta regla queda solo como red de seguridad del estado
+     inicial (mismo valor que calcula el JS a estos anchos). */
+  #fws_6a4638b738014 .nectar-flickity[data-controls="touch_total"] .visualized-total span {
+    width: 33.33% !important;
+  }
+
+  /* ---- Team mobile: dots del carrusel DEVELOPER/HOTEL/SALES ------------
+     (bloque decorativo ::after eliminado: main.js v12 ya inicializa este
+     flickity — viewport/track + drag — y genera los .flickity-page-dots
+     reales de material_pagination, que style.css estiliza solo.) */
+
+  /* ---- Formulario GET IN TOUCH ----------------------------------------
+     La copia no conserva las @font-face de "Noto Sans" del theme (0 de 40
+     caras cargadas vs la original), así que los inputs de texto caen a la
+     fuente del sistema y pierden 3px de alto intrínseco: 34px aquí frente
+     a 37px medidos en la original a 390 (mismos padding 8/16 y borde 1px).
+     Fijamos la altura medida; los selects ya coinciden (40px). */
+  #fws_6a4638b74d643 .wpcf7-form input[type="text"],
+  #fws_6a4638b74d643 .wpcf7-form input[type="tel"],
+  #fws_6a4638b74d643 .wpcf7-form input[type="email"] {
+    height: 37px;
+  }
+
+}
+
+@media (max-width: 690px) {
+
+  /* ≤690px la original baja las fotos del carrusel de amenities a 300px. */
+  .wpb_gallery_slidesflickity_static_height_style .nectar-flickity .flickity-slider .cell img {
+    height: 300px !important;
+  }
+
+}
