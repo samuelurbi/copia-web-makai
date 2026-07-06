@@ -177,3 +177,13 @@
   .faq-modal__scroll { padding: 64px 22px 32px; }
   .faq-item__q { font-size: 14px; }
 }
+
+/* ============================================================
+   BANDERAS DE IDIOMA (i18n.js) — la bandera del idioma inactivo
+   se atenúa; la activa (.mk-lang-active) queda a opacidad plena.
+   Va aquí por ser la última hoja de la capa de interacción propia.
+   ============================================================ */
+a[data-gt-lang] { transition: opacity 0.2s ease; }
+a[data-gt-lang]:not(.mk-lang-active) { opacity: 0.4; }
+a[data-gt-lang]:not(.mk-lang-active):hover { opacity: 0.75; }
+a[data-gt-lang].mk-lang-active { opacity: 1; }
