@@ -100,7 +100,11 @@
     var html = '<div class="faq-modal__overlay" data-faq-close></div>' +
       '<div class="faq-modal__panel">' +
       '<button class="faq-modal__close" data-faq-close aria-label="Close">×</button>' +
-      '<div class="faq-modal__scroll">' +
+      /* data-lenis-prevent: Lenis intercepta la rueda del mouse en toda la
+         página y hace preventDefault salvo en los elementos con este
+         atributo — sin él, el scroll nativo de este panel queda bloqueado
+         (arrastrar el scrollbar sí funciona porque no dispara "wheel") */
+      '<div class="faq-modal__scroll" data-lenis-prevent>' +
       '<h1 class="faq-modal__title">Frequently Asked Questions</h1>' +
       '<div class="faq-modal__title-rule"></div>';
 
