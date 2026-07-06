@@ -1,0 +1,179 @@
+/* ============================================================
+   MODAL DE FAQs — reemplaza la página /faqs/ de la original por
+   un modal que abre desde los enlaces "FAQS" del menú/footer.
+   Propietario: faq-modal. No lo tocan otros agentes.
+
+   Diseño medido en la original (makai-capcana.com/faqs/):
+   - fondo crema  #FCF6F4
+   - texto/títulos verde  #627B68
+   - acento/enlaces oro  #B48749
+   - H1 título: Cormorant Garamond, mayúsculas, letter-spacing 4px
+   - H3 sección: Cormorant Garamond 28px, mayúsculas, ls 3px
+   - pregunta: Noto Sans 16px/500, mayúsculas, ls 1px, padding 25px 0
+   - respuesta: Cormorant Garamond 19px/500, line-height 27px
+   - fila: borde inferior 1px rgba(0,0,0,.08), icono circular +/−
+   ============================================================ */
+
+.faq-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 4vh 20px;
+  box-sizing: border-box;
+}
+.faq-modal.is-open { display: flex; }
+
+.faq-modal__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(49, 62, 52, 0.9); /* mismo verde-oscuro que el mask del popup Hustle */
+  cursor: pointer;
+}
+
+.faq-modal__panel {
+  position: relative;
+  width: 100%;
+  max-width: 920px;
+  max-height: 92vh;
+  background: #FCF6F4;
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+}
+
+/* zona con scroll propio (el contenido de FAQs es largo) */
+.faq-modal__scroll {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 56px clamp(24px, 5vw, 64px) clamp(32px, 5vw, 56px);
+}
+
+/* botón cerrar */
+.faq-modal__close {
+  position: absolute;
+  top: 18px;
+  right: 20px;
+  z-index: 2;
+  width: 38px;
+  height: 38px;
+  border: none;
+  background: transparent;
+  color: #627B68;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 30px;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+.faq-modal__close:hover { background: rgba(98, 123, 104, 0.1); transform: rotate(90deg); }
+
+.faq-modal__title {
+  margin: 0 0 8px;
+  color: #627B68;
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 400;
+  font-size: clamp(30px, 5vw, 46px);
+  line-height: 1.1;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+.faq-modal__title-rule {
+  height: 1px;
+  background: rgba(98, 123, 104, 0.25);
+  margin: 18px 0 6px;
+}
+
+.faq-modal__section-title {
+  margin: 40px 0 4px;
+  color: #627B68;
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 400;
+  font-size: clamp(21px, 3vw, 28px);
+  line-height: 1.15;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* --- item acordeón --- */
+.faq-item { border-bottom: 1px solid rgba(0, 0, 0, 0.08); }
+
+.faq-item__q {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 22px 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  color: #627B68;
+  font-family: "Noto Sans", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.4;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* icono circular con +/−  (la línea vertical se oculta al abrir) */
+.faq-item__icon {
+  position: relative;
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+}
+.faq-item__icon::before,
+.faq-item__icon::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 1px;
+  background: currentColor;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.faq-item__icon::after { transform: translate(-50%, -50%) rotate(90deg); } /* barra vertical */
+.faq-item.is-open .faq-item__icon::after { opacity: 0; transform: translate(-50%, -50%) rotate(0deg); }
+
+/* cuerpo de la respuesta: altura animada por GSAP (height 0 -> auto) */
+.faq-item__a { height: 0; overflow: hidden; }
+.faq-item__a-inner {
+  padding: 0 0 26px;
+  color: #627B68;
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 500;
+  font-size: 19px;
+  line-height: 27px;
+}
+.faq-item__a-inner p { margin: 0 0 14px; }
+.faq-item__a-inner p:last-child { margin-bottom: 0; }
+.faq-item__a-inner ul,
+.faq-item__a-inner ol { margin: 0 0 14px; padding-left: 22px; }
+.faq-item__a-inner li { margin-bottom: 6px; }
+.faq-item__a-inner a { color: #B48749; text-decoration: none; }
+.faq-item__a-inner a:hover { text-decoration: underline; }
+.faq-item__a-inner b,
+.faq-item__a-inner strong { font-family: "Cormorant Garamond", serif; font-weight: 700; }
+
+/* scrollbar sobrio dentro del panel */
+.faq-modal__scroll::-webkit-scrollbar { width: 8px; }
+.faq-modal__scroll::-webkit-scrollbar-thumb { background: rgba(98, 123, 104, 0.35); border-radius: 8px; }
+
+@media (max-width: 767px) {
+  .faq-modal { padding: 0; }
+  .faq-modal__panel { max-width: 100%; max-height: 100%; height: 100%; border-radius: 0; }
+  .faq-modal__scroll { padding: 64px 22px 32px; }
+  .faq-item__q { font-size: 14px; }
+}
