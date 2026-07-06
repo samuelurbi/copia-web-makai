@@ -581,8 +581,20 @@
     var modal = document.querySelector('.hustle-popup');
     if (!mask || !modal || sessionStorage.getItem('mk-popup')) return;
     var contenido = modal.querySelector('.hustle-popup-content') || modal;
+    // el CSS de Hustle ya capturado esconde el contenido por diseño
+    // (.hustle-animate { opacity:0 }, base para sus animaciones de
+    // entrada/salida) y solo lo revela cuando se le añade el modificador
+    // correspondiente a data-intro/data-outro del propio popup (aquí
+    // "no_animation" → .hustle-animate-in--no_animation { opacity:1 },
+    // sin keyframe). El plugin real alterna esa clase vía JS; como
+    // sustituimos su JS por GSAP nunca se añadía, así que el contenido
+    // quedaba invisible bajo el overlay aunque este sí se veía.
+    var intro = modal.getAttribute('data-intro') || 'no_animation';
+    var outro = modal.getAttribute('data-outro') || 'no_animation';
 
     function cerrar() {
+      contenido.classList.remove('hustle-animate-in--' + intro);
+      contenido.classList.add('hustle-animate-out--' + outro);
       gsap.to([modal, mask], {
         autoAlpha: 0, duration: 0.3, onComplete: function () {
           modal.style.display = 'none'; mask.style.display = 'none';
@@ -594,6 +606,8 @@
       sessionStorage.setItem('mk-popup', '1');
       mask.style.display = 'block';
       modal.style.display = 'flex';
+      contenido.classList.remove('hustle-animate-out--' + outro);
+      contenido.classList.add('hustle-animate-in--' + intro);
       gsap.fromTo(mask, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.35 });
       gsap.fromTo(modal, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.35 });
       gsap.fromTo(contenido, { scale: 0.92, y: 20 }, { scale: 1, y: 0, duration: 0.45, ease: 'power3.out' });

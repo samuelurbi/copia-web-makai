@@ -8840,3 +8840,14 @@ button.btn[data-v-2b23e28f]{display:inline-block;font-weight:300;line-height:1.2
 /* ==== ajustes-copia-local (sustituyen al JS del theme) ==== */
 .row.portfolio-items{display:flex;flex-wrap:wrap}
 .row.portfolio-items .element{position:static !important;clear:none;width:25%}
+
+/* Icono "cerrar" del popup Hustle: su @font-face (hustle-icons-font) quedó
+   con url() vacío igual que Noto Sans (la extensión no capturó el binario),
+   así que el glifo de ::before cae a tofu. Sustituimos por una "×" con una
+   fuente del sistema; !important porque la regla del plugin fuerza
+   font-family:hustle-icons-font!important en todo [class*=hustle-icon-]. */
+.hustle-ui .hustle-icon-close:before{
+  content:"\00d7" !important;
+  font-family:Arial,Helvetica,sans-serif !important;
+  font-size:1.3em !important;
+}
